@@ -1,9 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="tr">
 <head>
+  <meta charset="UTF-8" />
   <title>PikselPart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: white;
+      text-align: center;
+    }
+    #info {
+      margin: 10px;
+    }
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(20, 20px);
+      justify-content: center;
+      margin: 20px auto;
+    }
+    .pixel {
+      width: 20px;
+      height: 20px;
+      background: #222;
+      border: 1px solid #333;
+      cursor: pointer;
+    }
+    .cooldown {
+      pointer-events: none;
+      opacity: 0.5;
+    }
+  </style>
 </head>
 <body>
-  <h1>PikselPart çalışıyor</h1>
+
+<h1>PikselPart</h1>
+<div id="info">Bir piksele tıkla</div>
+
+<div id="grid"></div>
+
+<script>
+  const grid = document.getElementById("grid");
+  const info = document.getElementById("info");
+  const COOLDOWN = 3000; // 3 saniye
+  let canClick = true;
+
+  for (let i = 0; i < 400; i++) {
+    const pixel = document.createElement("div");
+    pixel.className = "pixel";
+
+    pixel.addEventListener("click", () => {
+      if (!canClick) return;
+
+      pixel.style.background = "red";
+      canClick = false;
+      info.textContent = "Bekle...";
+
+      document.body.classList.add("cooldown");
+
+      setTimeout(() => {
+        canClick = true;
+        info.textContent = "Tekrar tıklayabilirsin";
+        document.body.classList.remove("cooldown");
+      }, COOLDOWN);
+    });
+
+    grid.appendChild(pixel);
+  }
+</script>
+
 </body>
 </html>
